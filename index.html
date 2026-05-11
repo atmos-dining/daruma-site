@@ -414,7 +414,7 @@
       const top3 = posts.slice(0, 3);
       grid.innerHTML = '';
       top3.forEach(p => {
-        const img = p.image ? String(p.image).replace(/^\.\.\//, './').replace(/^\.\//, './blog/') : '';
+        const img = p.image ? String(p.image).replace(/^\.\.\//, './') : '';
         const bg  = img ? `background-image:url('${esc(img)}');` : 'background:#f0f0f0;';
         const el  = document.createElement('article');
         el.className = 'blog-card';
