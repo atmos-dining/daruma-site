@@ -202,9 +202,8 @@
   }
 
   function initGA4Tracking() {
-    if (typeof gtag !== 'function') return;
-
     document.addEventListener('click', function(e) {
+      if (typeof gtag !== 'function') return;
       const a = e.target.closest('a');
       if (!a) return;
       const href = a.getAttribute('href') || '';
