@@ -126,12 +126,10 @@
     logoLink.style.display    = 'flex';
     logoLink.style.alignItems = 'center';
 
-    const RANGE        = 200; // このpx分スクロールで完全にコンパクトになる
-    const LOGO_COMPACT = 56;  // コンパクト時のロゴ高さ
+    const RANGE = 200;
 
-    // ボタンの初期スタイルを設定（高さをJSで制御）
+    // ボタンはCSS（display:none on mobile）に任せ、flex配置だけ設定
     if (reserveBtn) {
-      reserveBtn.style.display        = 'flex';
       reserveBtn.style.alignItems     = 'center';
       reserveBtn.style.justifyContent = 'center';
       reserveBtn.style.paddingTop     = '0';
@@ -142,30 +140,39 @@
     function lerp(a, b, t) { return a + (b - a) * t; }
 
     function onScroll() {
+      const isMobile = window.innerWidth <= 900;
       const t = Math.min(Math.max(window.scrollY / RANGE, 0), 1);
       const e = t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
 
-      // ① header-inner 上下padding: 16 → 0（ボタンが端まで届く）
-      inner.style.paddingTop    = lerp(16, 0,  e) + 'px';
-      inner.style.paddingBottom = lerp(16, 0,  e) + 'px';
-      inner.style.paddingLeft   = lerp(32, 24, e) + 'px';
-      inner.style.paddingRight  = lerp(32, 0,  e) + 'px';
-
-      // ② ロゴ高さ: 80 → 56（大きめに保持）
-      logoImg.style.height = lerp(80, LOGO_COMPACT, e) + 'px';
-
-      // ③ ボタン高さ = コンパクト時のヘッダー高さに合わせる
-      //    normal時: 46px（自然なサイズ）→ compact時: 56px（ロゴと同じ高さ = ヘッダー全体）
-      if (reserveBtn) {
-        reserveBtn.style.height       = lerp(46, LOGO_COMPACT, e) + 'px';
-        reserveBtn.style.borderRadius = lerp(4, 0, e) + 'px';
+      if (isMobile) {
+        // スマホ：固定サイズ（スクロールで変化しない）
+        inner.style.paddingTop    = '';
+        inner.style.paddingBottom = '';
+        inner.style.paddingLeft   = '';
+        inner.style.paddingRight  = '';
+        logoImg.style.height      = '40px';
+        if (reserveBtn) {
+          reserveBtn.style.height       = '';
+          reserveBtn.style.borderRadius = '';
+        }
+      } else {
+        inner.style.paddingTop    = lerp(16, 0,  e) + 'px';
+        inner.style.paddingBottom = lerp(16, 0,  e) + 'px';
+        inner.style.paddingLeft   = lerp(32, 24, e) + 'px';
+        inner.style.paddingRight  = lerp(32, 0,  e) + 'px';
+        logoImg.style.height      = lerp(80, 56, e) + 'px';
+        if (reserveBtn) {
+          reserveBtn.style.display      = 'flex';
+          reserveBtn.style.height       = lerp(46, 56, e) + 'px';
+          reserveBtn.style.borderRadius = lerp(4,  0,  e) + 'px';
+        }
       }
 
-      // ④ header-right の gap
-      if (hRight) hRight.style.gap = lerp(16, 0, e) + 'px';
+      if (hRight) hRight.style.gap = isMobile ? '' : lerp(16, 0, e) + 'px';
     }
 
     window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
     onScroll();
   }
 
