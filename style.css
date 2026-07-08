@@ -513,27 +513,15 @@ body:not(.is-home) .section {
   z-index: 1;
 }
 
-/* スライドショー */
-.hero-slides {
+/* ヒーロー動画 */
+.hero-video {
   position: absolute;
   inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   z-index: 0;
 }
-
-.hero-slide {
-  position: absolute;
-  inset: 0;
-  background-size: cover;
-  background-position: center;
-  opacity: 0;
-  transition: opacity 1.6s ease;
-}
-
-.hero-slide.is-active { opacity: 1; }
-
-.hero-slide-1 { background-image: url("./images/hero-daruma.jpg"); }
-.hero-slide-2 { background-image: url("./images/hero-daruma1.jpg"); }
-.hero-slide-3 { background-image: url("./images/hero-daruma2.jpg"); }
 
 /* 暗めオーバーレイ */
 .hero-visual::before {
