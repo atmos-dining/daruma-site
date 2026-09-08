@@ -5,6 +5,8 @@
 <title>ブログ｜焼肉はひとくちめ だるま</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="焼肉はひとくちめ だるまのブログ記事。">
+<link rel="canonical" id="canonical-link" href="https://yakiniku-daruma.com/blog/">
+<meta property="og:url" id="og-url" content="https://yakiniku-daruma.com/blog/">
 <link rel="icon" href="../../images/daruma_icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -90,9 +92,9 @@
 <main id="main">
   <div class="post-wrap">
     <nav class="post-breadcrumb">
-      <a href="../../index.html">トップ</a>
+      <a href="/">トップ</a>
       <span>/</span>
-      <a href="../index.html">ブログ・お知らせ</a>
+      <a href="/blog/">ブログ・お知らせ</a>
       <span>/</span>
       <span id="bc-title">記事</span>
     </nav>
@@ -125,9 +127,13 @@
   }
 
   if (!slug) {
-    contentEl.innerHTML = '<p>記事が見つかりませんでした。<br><a href="../index.html" style="text-decoration:underline">ブログ一覧へ</a></p>';
+    contentEl.innerHTML = '<p>記事が見つかりませんでした。<br><a href="/blog/" style="text-decoration:underline">ブログ一覧へ</a></p>';
     return;
   }
+
+  const canonicalUrl = `https://yakiniku-daruma.com/blog/posts/post.html?slug=${encodeURIComponent(slug)}`;
+  document.getElementById('canonical-link')?.setAttribute('href', canonicalUrl);
+  document.getElementById('og-url')?.setAttribute('content', canonicalUrl);
 
   try {
     const res = await fetch('../posts.json', { cache: 'no-store' });
@@ -164,14 +170,14 @@
       ${imgHtml}
       <div class="post-body">${bodyHtml}</div>
       <div class="post-footer">
-        <a href="../index.html">← ブログ一覧へ戻る</a>
+        <a href="/blog/">← ブログ一覧へ戻る</a>
         <span>|</span>
-        <a href="../../index.html">トップへ</a>
+        <a href="/">トップへ</a>
       </div>
     `;
 
   } catch(e) {
-    contentEl.innerHTML = `<p>エラー：${esc(e.message)}<br><a href="../index.html" style="text-decoration:underline">ブログ一覧へ</a></p>`;
+    contentEl.innerHTML = `<p>エラー：${esc(e.message)}<br><a href="/blog/" style="text-decoration:underline">ブログ一覧へ</a></p>`;
     console.error(e);
   }
 })();
